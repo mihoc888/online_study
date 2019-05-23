@@ -5,14 +5,12 @@
 <html>
 <head>
     <title>教授课程</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 引入bootstrap -->
     <link rel="stylesheet" type="text/css" href="${ctx}/css/bootstrap.min.css">
     <!-- 引入JQuery  bootstrap.js-->
     <script src="${ctx}/js/jquery-3.2.1.min.js"></script>
     <script src="${ctx}/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <!-- 顶栏 -->
@@ -46,7 +44,7 @@
                     <c:forEach  items="${vedios}" var="item">
                         <tr>
                             <td><a href="${ctx}/teacher/showVedio?vid=${item.id}">${item.name}</a></td>
-                            <td><button type="submit" class="btn btn-default" id="delete">删除</button></td>
+                            <td><button type="button" class="btn btn-default"><a href="/teacher/deleteVedio?vid=${item.id}">删除</a></button></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -141,6 +139,7 @@
     function parseCid(cid) {
         curcid = cid;
     }
+
 
 </script>
 </html>

@@ -13,6 +13,8 @@ public interface VedioMapper {
     String getPath(Integer vid);
 
     String getCourseName(Integer vid);
+
+    void delete(Integer vid);
     // 文件名，储存路径，课程id，用户登录名，时间戳
 
 }

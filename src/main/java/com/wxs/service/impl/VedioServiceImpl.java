@@ -45,4 +45,8 @@ public class VedioServiceImpl implements VedioService {
         return vedioMapper.getCourseName(vid);
     }
 
+    @Override
+    public void delete(Integer vid) {
+        vedioMapper.delete(vid);
+    }
 }

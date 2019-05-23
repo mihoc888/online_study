@@ -19,6 +19,12 @@
                 #{3}
               ) ;
     </insert>
+    <delete id="delete">
+            DELETE
+            FROM
+              vedio
+            WHERE `id` = #{0} ;
+    </delete>
     <select id="getByCid" resultType="com.wxs.po.Vedio">
         SELECT * FROM `vedio` WHERE course_id = #{0}
     </select>

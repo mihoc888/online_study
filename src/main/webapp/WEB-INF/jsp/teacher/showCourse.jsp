@@ -138,6 +138,9 @@
         $("#sub").click(function () {
             $("#form1").submit();
         });
+        $("#delete").click(function () {
+
+        });
         function check() {
             var fileName = $("#name").val();
             if(typeof(fileName)!="undefined"&&fileName!=null){

@@ -13,4 +13,6 @@ public interface VedioService {
     String getPath(Integer vid);
 
     String getCourseName(Integer vid);
+
+    void delete(Integer vid);
 }

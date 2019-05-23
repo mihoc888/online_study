@@ -36,7 +36,7 @@ public class FileController {
         String datebasePath = dbPath + ct + ".mp4"; // 数据库访问路径 , 到时vedio 通过此路径访问 代理目录下的视频
         String realPath = request.getServletContext().getRealPath("");
         // 获取项目根目录
-        File file1 = new File(realPath+"/vedio/" + System.currentTimeMillis() + ".mp4");
+        File file1 = new File(realPath+"/vedio/" + ct + ".mp4");
 
         try {
             byte[] bs = file.getBytes();

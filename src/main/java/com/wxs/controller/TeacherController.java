@@ -292,4 +292,9 @@ public class TeacherController {
         commentService.addComment(qid, textarea,courseId);// pid  text
         return "success";
     }
+    @RequestMapping("/deleteVedio")
+    public String deleteVedio(@RequestParam Integer vid) {
+        vedioService.delete(vid);
+        return "success";
+    }
 }
