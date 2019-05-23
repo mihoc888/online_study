@@ -104,7 +104,7 @@
 				<div class="modal-header">
 					<form onsubmit="return check()" method="post" action="/upload/vedio" enctype = "multipart/form-data">
 						<div class="form-group">
-							<label for="name" id="vedioName" name="vedioName"></video>">视频名称</label>
+							<label for="name" id="vedioName" name="vedioName"></video>视频名称</label>
 							<input type="text" class="form-control" id="name" name="name"
 								   placeholder="请输入名称">
 						</div>
@@ -141,7 +141,6 @@
         function check() {
             var fileName = $("#name").val();
             if(typeof(fileName)!="undefined"&&fileName!=null){
-                alert("haha");
                 $("#cid").val(curcid);
                 return true;
             }else {

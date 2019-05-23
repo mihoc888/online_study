@@ -32,7 +32,7 @@
                     <tr >
                         <td align="center">
                             <video width="800" height="600" controls="controls" autoplay="autoplay">
-                                <source src="../vedio/v.mp4" type="video/mp4"/>
+                                <source src="/${path}" type="video/mp4"/>
                             </video>
                         </td>
                     </tr>

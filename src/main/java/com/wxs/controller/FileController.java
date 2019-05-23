@@ -18,8 +18,11 @@ import java.io.*;
 @RequestMapping("/upload")
 public class FileController {
 
+    // 输出文件夹 --> 应该被 nginx 代理
+    private String path = "D:\\vedio\\";
+    // 数据库存储的path
+    private String dbPath = "vedio/";
 
-    private String path = "C:\\Users\\h\\Desktop\\vedio\\";
 
     @Resource(name = "vedioServiceImpl")
     private VedioService vedioService;
@@ -27,14 +30,17 @@ public class FileController {
     @RequestMapping(value = "vedio", produces = {"application/json;charset=UTF-8"})
     public String upload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name,
                          @RequestParam("cid") Integer cid, HttpServletRequest request) {
-        String servletPath = request.getServletPath();
-        System.out.println(servletPath);
         FileOutputStream out = null;
         InputStream is = null;
-        String saveFilePath = path + System.currentTimeMillis() + ".mp4";
+        String ct = System.currentTimeMillis()+"";
+        String datebasePath = dbPath + ct + ".mp4"; // 数据库访问路径 , 到时vedio 通过此路径访问 代理目录下的视频
+        String realPath = request.getServletContext().getRealPath("");
+        // 获取项目根目录
+        File file1 = new File(realPath+"/vedio/" + System.currentTimeMillis() + ".mp4");
+
         try {
             byte[] bs = file.getBytes();
-            out = new FileOutputStream(saveFilePath);
+            out = new FileOutputStream(file1);
             is = new ByteArrayInputStream(bs);
             byte[] buff = new byte[1024];
             int len = 0;
@@ -57,7 +63,7 @@ public class FileController {
         // 获取用户名
 
         // 获取文件名
-        vedioService.addVedio(name, saveFilePath, cid);
+        vedioService.addVedio(name,datebasePath, cid);
         return "success";
     }
 
