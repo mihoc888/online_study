@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class StudentController {
     @Resource(name = "userloginServiceImpl")
     private UserloginService userloginService;
 
+
     @Resource(name = "courseServiceImpl")
     private CourseService courseService;
 
@@ -39,6 +42,11 @@ public class StudentController {
     @Resource(name = "studentCourseServiceImpl")
     private StudentCourseService studentCourseService;
 
+    @Resource(name = "vedioServiceImpl")
+    private VedioService vedioService;
+
+    @Resource(name = "commentServiceImpl")
+    private CommentService commentService;
     /* ----- 普通方法区 START ----- */
     /**
      * 获取当前登陆用户名
@@ -484,4 +492,39 @@ public class StudentController {
         return "student/passwordRest";
     }
     /* ----- 其他区 END ----- */
+
+
+    /**
+     * 根据课程id 查询视频列表
+     */
+    @RequestMapping(value = "/courseList", method = RequestMethod.GET)
+    public String getCourseList(Model model, @RequestParam("cid") Integer cid) {
+        // 根据cid 查列表
+        List<Vedio> vedios = vedioService.getByCid(cid);
+        model.addAttribute("vedios", vedios);
+        return "student/vedioList";
+    }
+
+    @RequestMapping(value = "/showVedio", method = RequestMethod.GET)
+    public String showVedio(Model model, @RequestParam Integer vid) {
+        // 根据id 获取vedio 路径
+        String path = vedioService.getPath(vid);
+        String courseName = vedioService.getCourseName(vid);
+        // 根据id 获取该vedio的评论
+        ArrayList<ArrayList<Comments>> comments = commentService.getComments(vid);
+        model.addAttribute("path", path);
+        model.addAttribute("comments", comments);
+        model.addAttribute("courseName", courseName);
+        model.addAttribute("courseId", vid);
+        System.out.println(vid);
+        return "student/showVedio";
+    }
+
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public String addComment(@RequestParam("qid") Integer qid, @RequestParam("textarea") String textarea,
+                             @RequestParam("courseId") Integer courseId) {
+        commentService.addComment(0, textarea,courseId);// pid  text
+        return "success";
+    }
+
 }

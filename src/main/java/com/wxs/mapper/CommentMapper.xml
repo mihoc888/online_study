@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wxs.mapper.CommentMapper" >
+    <insert id="addComment">
+            INSERT INTO `comments` (
+              `pid`,
+              `text`,
+              `create_time`,
+              `course_id`,
+              `user_id`
+            )
+            VALUES
+              (
+                #{0},
+                #{1},
+                #{2},
+                #{3},
+                #{4}
+              ) ;
+    </insert>
+    <select id="findByPid" resultType="com.wxs.po.Comments">
+                SELECT
+                  id,
+                  `pid`,
+                  `text`,
+                  `create_time` createTime,
+                  `course_id` courseId,
+                  `user_id` userId
+                FROM
+                  `comments`
+                WHERE course_id = #{0}
+                  AND pid = #{1}
+                ORDER BY create_time DESC
+                LIMIT 15;
+    </select>
+</mapper>

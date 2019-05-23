@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -40,8 +41,15 @@ public class TeacherController {
     @Resource(name = "studentCourseServiceImpl")
     private StudentCourseService studentCourseService;
 
+    @Resource(name = "vedioServiceImpl")
+    private VedioService vedioService;
+
+    @Resource(name = "commentServiceImpl")
+    private CommentService commentService;
+
     /**
      * 获取当前用户名
+     *
      * @return 用户名
      */
     private String getUserName() {
@@ -52,20 +60,22 @@ public class TeacherController {
 
     /**
      * 获取当前登陆用户名的id
+     *
      * @return
      */
-    private Integer getUserId() throws Exception{
+    private Integer getUserId() throws Exception {
         Userlogin userlogin = userloginService.findByName(getUserName());
         return userlogin.getId();
     }
 
     /**
      * 获取CourseCustom
+     *
      * @param course
      * @return
      * @throws Exception
      */
-    private CourseCustom getCourseCustom(Course course) throws Exception{
+    private CourseCustom getCourseCustom(Course course) throws Exception {
         CourseCustom courseCustom = new CourseCustom();
         BeanUtils.copyProperties(course, courseCustom);
         Teacher teacher = teacherService.findById(course.getTeacherId());
@@ -76,13 +86,14 @@ public class TeacherController {
 
     /**
      * 获取CourseCustom列表
+     *
      * @param list
      * @return
      * @throws Exception
      */
-    private List<CourseCustom> getCourseCustomList(List<Course> list) throws Exception{
+    private List<CourseCustom> getCourseCustomList(List<Course> list) throws Exception {
         List<CourseCustom> lists = new ArrayList<CourseCustom>();
-        for (Course course: list) {
+        for (Course course : list) {
             lists.add(getCourseCustom(course));
         }
         return lists;
@@ -90,11 +101,12 @@ public class TeacherController {
 
     /**
      * 获取StudentCourseCustom
+     *
      * @param studentCourse
      * @return
      * @throws Exception
      */
-    private StudentCourseCustom getStudentCourseCustom(StudentCourse studentCourse) throws Exception{
+    private StudentCourseCustom getStudentCourseCustom(StudentCourse studentCourse) throws Exception {
         Course course = courseService.findById(studentCourse.getCourseId());
         String teacherName = teacherService.findById(course.getTeacherId()).getName();
         String studentName = studentService.findById(studentCourse.getStudentId()).getName();
@@ -110,13 +122,14 @@ public class TeacherController {
 
     /**
      * 获取StudentCourseCustom列表
+     *
      * @param list
      * @return
      * @throws Exception
      */
-    private List<StudentCourseCustom> getStudentCourseCustomList(List<StudentCourse> list) throws Exception{
+    private List<StudentCourseCustom> getStudentCourseCustomList(List<StudentCourse> list) throws Exception {
         List<StudentCourseCustom> lists = new ArrayList<StudentCourseCustom>();
-        for (StudentCourse studentCourse: list) {
+        for (StudentCourse studentCourse : list) {
             lists.add(getStudentCourseCustom(studentCourse));
         }
         return lists;
@@ -124,21 +137,23 @@ public class TeacherController {
 
     /**
      * 退出登陆
+     *
      * @return
      */
     @RequestMapping(value = "/logout")
-    public String logout(){
+    public String logout() {
         return "redirect:/logout";
     }
 
     /**
      * 个人中心页面
+     *
      * @param model Model对象
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/showSelf")
-    public String showSelf (Model model) throws Exception {
+    public String showSelf(Model model) throws Exception {
         Teacher teacher = teacherService.findById(getUserId());
 
         model.addAttribute("teacher", teacher);
@@ -147,6 +162,7 @@ public class TeacherController {
 
     /**
      * 显示我的课程页面
+     *
      * @param model Model对象
      * @return
      * @throws Exception
@@ -160,7 +176,7 @@ public class TeacherController {
         return "teacher/showCourse";
     }
 
-    @RequestMapping(value = "/findCourse" ,method = {RequestMethod.POST})
+    @RequestMapping(value = "/findCourse", method = {RequestMethod.POST})
     public String findCourse(String name, Model model) throws Exception {
 
         List<Course> list = courseService.findByName(name);
@@ -171,7 +187,8 @@ public class TeacherController {
 
     /**
      * 查看课程成绩
-     * @param id 课程id
+     *
+     * @param id    课程id
      * @param model Model对象
      * @return
      * @throws Exception
@@ -191,6 +208,7 @@ public class TeacherController {
 
     /**
      * 打分UI页面
+     *
      * @param studentId
      * @param courseId
      * @param model
@@ -202,7 +220,7 @@ public class TeacherController {
 
         StudentCourse studentCourse = studentCourseService.findOne(courseId, studentId);
 
-        if(studentCourse.getHasExam() == false) {
+        if (studentCourse.getHasExam() == false) {
             throw new CustomException("该学生未参加考试，无法评分！");
         }
 
@@ -214,6 +232,7 @@ public class TeacherController {
 
     /**
      * 打分处理函数
+     *
      * @param sc SelectedCourseCustom对象
      * @return
      * @throws Exception
@@ -224,11 +243,12 @@ public class TeacherController {
         studentCourse.setMark(sc.getMark());
         studentCourseService.update(studentCourse);
 
-        return "redirect:/teacher/gradeCourse?id="+sc.getCourseId();
+        return "redirect:/teacher/gradeCourse?id=" + sc.getCourseId();
     }
 
     /**
      * 修改密码
+     *
      * @return
      * @throws Exception
      */
@@ -237,4 +257,39 @@ public class TeacherController {
         return "teacher/passwordRest";
     }
 
+    /**
+     * 根据课程id 查询视频列表
+     */
+    @RequestMapping(value = "/courseList", method = RequestMethod.GET)
+    public String getCourseList(Model model, @RequestParam("cid") Integer cid) {
+        // 根据cid 查列表
+        List<Vedio> vedios = vedioService.getByCid(cid);
+        model.addAttribute("vedios", vedios);
+        return "teacher/vedioList";
+    }
+
+    @RequestMapping(value = "/showVedio", method = RequestMethod.GET)
+    public String showVedio(Model model, @RequestParam Integer vid) {
+        // 根据id 获取vedio 路径
+        String path = vedioService.getPath(vid);
+        String courseName = vedioService.getCourseName(vid);
+        // 根据id 获取该vedio的评论
+        ArrayList<ArrayList<Comments>> comments = commentService.getComments(vid);
+        model.addAttribute("path", path);
+        model.addAttribute("comments", comments);
+        model.addAttribute("courseName", courseName);
+        model.addAttribute("courseId", vid);
+        System.out.println(vid);
+        return "teacher/showVedio";
+    }
+
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public String addComment(@RequestParam("qid") Integer qid, @RequestParam("textarea") String textarea,
+                             @RequestParam("courseId") Integer courseId) {
+        System.out.println(courseId);
+        System.out.println(qid);
+        System.out.println(textarea);
+        commentService.addComment(qid, textarea,courseId);// pid  text
+        return "success";
+    }
 }

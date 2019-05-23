@@ -49,11 +49,12 @@
 							<c:forEach  items="${courseList}" var="item">
 								<tr>
 									<td>${item.id}</td>
-									<td>${item.name}</td>
+									<td><a href="${ctx}/teacher/courseList?cid=${item.id}">${item.name}</a></td>
 									<td>${item.period}</td>
 									<td>${item.price}</td>
 									<td>
 										<button class="btn btn-default btn-xs btn-info" onClick="location.href='${ctx}/teacher/gradeCourse?id=${item.id}'">课程管理</button>
+										<button class="btn btn-default btn-xs btn-info" data-toggle="modal" data-target="#myModal" onclick="parseCid(${item.id})">上传视频</button>
 									</td>
 								</tr>
 							</c:forEach>
@@ -92,8 +93,36 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+<%-- 模态框 --%>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">上传视频</h4>
+				</div>
+				<div class="modal-header">
+					<form onsubmit="return check()" method="post" action="/upload/vedio" enctype = "multipart/form-data">
+						<div class="form-group">
+							<label for="name" id="vedioName" name="vedioName"></video>">视频名称</label>
+							<input type="text" class="form-control" id="name" name="name"
+								   placeholder="请输入名称">
+						</div>
+						<div class="form-group">
+							<input type="file" id="file" name="file">
+						</div>
+						<input type="hidden" name="cid" id="cid">
+						<button type="submit" class="btn btn-default" id="uploadButton">提交</button>
+					</form>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
 </body>
 	<script type="text/javascript">
+
+		// 声明全局cid
+        curcid = 0;
 		<%--设置菜单中--%>
 		$("#nav li:nth-child(1)").addClass("active")
         <c:if test="${pagingVO != null}">
@@ -109,5 +138,19 @@
         $("#sub").click(function () {
             $("#form1").submit();
         });
+        function check() {
+            var fileName = $("#name").val();
+            if(typeof(fileName)!="undefined"&&fileName!=null){
+                alert("haha");
+                $("#cid").val(curcid);
+                return true;
+            }else {
+                return false;
+            }
+        }
+        function parseCid(cid) {
+            curcid = cid;
+        }
+
 	</script>
 </html>

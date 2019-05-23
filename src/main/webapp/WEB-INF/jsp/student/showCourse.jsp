@@ -50,7 +50,7 @@
 							<c:forEach  items="${courseList}" var="item">
 								<tr>
 									<td>${item.id}</td>
-									<td>${item.name}</td>
+									<td><a href="${ctx}/student/courseList?cid=${item.id}">${item.name}</a></td>
 									<td>${item.teacherName}</td>
 									<td>${item.period}</td>
 									<td>${item.price}</td>
