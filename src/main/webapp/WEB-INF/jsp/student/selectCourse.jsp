@@ -46,14 +46,13 @@
 							<c:forEach  items="${StudentCourseCustomList}" var="item">
 									<tr>
 										<td>${item.courseId}</td>
-										<td>${item.course.name}</td>
+										<td><a href="${ctx}/student/courseList?cid=${item.courseId}">${item.course.name}</a></td>
 										<td>${item.teacherName}</td>
 										<td>${item.course.period}</td>
 										<td>${item.course.price}</td>
 										<td>${item.progress}</td>
 										<td>
 											<button class="btn btn-default btn-xs btn-info" onClick="location.href='${ctx}/student/startStudy?id=${item.courseId}'">学习</button>
-											<button class="btn btn-default btn-xs btn-info" onClick="location.href='${ctx}/student/startExam?id=${item.courseId}'">考试</button>
 											<a class="btn btn-danger btn-xs" href="${ctx}/student/outCourse?id=${item.courseId}" onclick="return checkConfirm()">退课</a>
 										</td>
 									</tr>

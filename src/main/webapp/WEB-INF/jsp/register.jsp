@@ -31,7 +31,8 @@
         <div class="col-md-4" id="login-box">
             <h2>&nbsp;&nbsp;在线课程学习系统</h2>
             <div></div>
-            <form class="form-horizontal" role="form" action="${ctx}/login" id="from1" method="post">
+            <form onsubmit="return checkPass()" class="form-horizontal" role="form" action="${ctx}/register" id="from1"
+                  method="post">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">名称：</label>
                     <div class="col-sm-9">
@@ -45,11 +46,18 @@
                                required="required">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">确认：</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="password2" placeholder="请确认密码"
+                               required="required">
+                    </div>
+                </div>
 
                 <div class="form-group pull-right" style="margin-right: 15px;">
-                    <button type="submit" class="btn btn-default btn-info">登录</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" onclick="register()" class="btn btn-default btn-info">注册</button>
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default btn-info">确认</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -58,8 +66,18 @@
 </div>
 </body>
 <script>
-    function register() {
-        window.location.href = "/registerPage"
+    function checkPass() {
+        var p1 = $("#password").val();
+        var p2 = $("#password2").val();
+        var name = $("#name").val();
+        if ( name ? false : true) {
+            return "名称不能为空";
+        }
+        if (p1 != p2) {
+            alert("两次密码输入错误");
+            return false;
+        }
+        return true;
     }
 </script>
 </html>

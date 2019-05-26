@@ -190,9 +190,7 @@
     }
     function check2() {
         var textarea = $("#textarea").val();
-        alert(textarea)
         if (typeof(textarea) != "undefined" && textarea != null) {
-            alert("hahah");
             $("#qid").val(quesid);
             return true;
         } else {

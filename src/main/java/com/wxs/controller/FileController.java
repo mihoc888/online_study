@@ -18,8 +18,7 @@ import java.io.*;
 @RequestMapping("/upload")
 public class FileController {
 
-    // 输出文件夹 --> 应该被 nginx 代理
-    private String path = "D:\\vedio\\";
+
     // 数据库存储的path
     private String dbPath = "vedio/";
 

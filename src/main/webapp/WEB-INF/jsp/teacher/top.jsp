@@ -7,7 +7,7 @@
             <!--加入导航条标题-->
             <div class="navbar navbar-default" role="navigation">
                 　<div class="navbar-header">
-                　    <a href="${ctx}" class="navbar-brand">在线课程管理系统(教师端)</a>
+                　    <a href="${ctx}" class="navbar-brand">在线课程学习系统(教师端)</a>
                 　</div>
                 <form action="##" class="navbar-form navbar-right" rol="search">
                     <div class="dropdown">
